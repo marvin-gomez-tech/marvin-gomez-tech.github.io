@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Authorization complete — TikTokClipperBot</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { margin:0; background:#0d0e13; color:#dfe4ee;
+           font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+    main { max-width:680px; margin:0 auto; padding:56px 24px; }
+    h1 { font-size:1.5rem; } code { color:#9ecbff; }
+    textarea { width:100%; height:90px; margin:.5rem 0; padding:10px;
+               background:#15171f; color:#dfe4ee; border:1px solid #2a2e3a;
+               border-radius:8px; font-family:ui-monospace,Consolas,monospace; }
+    button { background:#4f8cff; color:#fff; border:0; padding:10px 16px;
+             border-radius:8px; cursor:pointer; font-size:1rem; }
+    .parsed { margin-top:1rem; color:#8b93a7; font-family:ui-monospace,Consolas,monospace; }
+    .err { color:#ff6b6b; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Authorization received ✅</h1>
+    <p>Copy the full URL below and paste it back into the
+       <code>tiktok_setup.py</code> prompt in your terminal:</p>
+    <textarea id="url" readonly></textarea>
+    <button onclick="copyUrl()">Copy URL</button>
+    <p class="parsed" id="parsed"></p>
+
+    <script>
+      const url = window.location.href;
+      document.getElementById('url').value = url;
+      const p = new URLSearchParams(window.location.search);
+      const code = p.get('code'), state = p.get('state'), err = p.get('error');
+      const out = document.getElementById('parsed');
+      if (err) { out.className = 'parsed err'; out.textContent = 'Error: ' + err + ' — ' + (p.get('error_description') || ''); }
+      else { out.textContent = 'code: ' + (code || '(none)') + '   state: ' + (state || '(none)'); }
+      function copyUrl() {
+        const t = document.getElementById('url');
+        t.select(); t.setSelectionRange(0, 99999);
+        navigator.clipboard ? navigator.clipboard.writeText(t.value) : document.execCommand('copy');
+      }
+    </script>
+  </main>
+</body>
+</html>
